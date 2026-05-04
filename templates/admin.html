@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" style="padding-top: 100px; padding-bottom: 50px;">
+    <div class="page-header text-center animate-fade-up">
+        <h1 class="page-title text-warning"><i class="fa-solid fa-shield-halved"></i> Admin Panel</h1>
+        <p class="page-subtitle">Pusat Kendali Data Laporan & Riwayat Bukti Pengiriman</p>
+    </div>
+
+    <div class="row g-4 mt-2">
+        <!-- Kolom Kiri: Riwayat Laporan Kendala -->
+        <div class="col-lg-6 animate-fade-up delay-1">
+            <div class="glass-card h-100">
+                <h4 class="card-title-custom" style="color: #ff4757;">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: #ff4757;"></i> Daftar Kendala Dilaporkan
+                </h4>
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <table class="table table-custom">
+                        <thead style="position: sticky; top: 0; background: var(--card-bg); z-index: 1;">
+                            <tr>
+                                <th>ID Laporan</th>
+                                <th>Deskripsi Kendala</th>
+                                <th>Waktu Laporan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in reports %}
+                            <tr>
+                                <td class="fw-bold text-muted">#{{ r[0] }}</td>
+                                <td>{{ r[1] }}</td>
+                                <td class="text-muted small">{{ r[2] if r|length > 2 else 'Waktu Tidak Tersedia' }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="3" class="text-center py-4 text-muted">
+                                    <i class="fa-solid fa-check-circle mb-2" style="font-size: 2rem; color: rgba(0, 255, 128, 0.3);"></i><br>
+                                    Belum ada kendala yang dilaporkan. Operasional lancar!
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kolom Kanan: Log Bukti Pengiriman (S3) -->
+        <div class="col-lg-6 animate-fade-up delay-2">
+            <div class="glass-card h-100">
+                <h4 class="card-title-custom text-info">
+                    <i class="fa-solid fa-cloud-arrow-up text-info"></i> Riwayat Upload S3
+                </h4>
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <table class="table table-custom">
+                        <thead style="position: sticky; top: 0; background: var(--card-bg); z-index: 1;">
+                            <tr>
+                                <th>ID Log</th>
+                                <th>Nama File</th>
+                                <th>Status Storage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for l in logs %}
+                            <tr>
+                                <td class="fw-bold text-muted">#{{ l[0] }}</td>
+                                <td><i class="fa-solid fa-file-image me-2 text-primary"></i>{{ l[1] }}</td>
+                                <td><span class="status-badge" style="border-color: rgba(0, 255, 128, 0.5); color: #00ff80;"><i class="fa-solid fa-check me-1"></i> {{ l[2] }}</span></td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="3" class="text-center py-4 text-muted">
+                                    <i class="fa-solid fa-folder-open mb-2" style="font-size: 2rem; color: rgba(255, 255, 255, 0.1);"></i><br>
+                                    Belum ada file bukti yang diunggah.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

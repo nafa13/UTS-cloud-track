@@ -84,5 +84,29 @@ def report_issue():
         conn.close()
     return redirect(url_for('index'))
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/admin')
+def admin():
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        
+        # Ambil data logs (id, filename, status)
+        cur.execute('SELECT * FROM logs ORDER BY id DESC')
+        logs = cur.fetchall()
+        
+        # Ambil data reports (id, description)
+        cur.execute('SELECT * FROM reports ORDER BY id DESC')
+        reports = cur.fetchall()
+        
+        cur.close()
+        conn.close()
+        return render_template('admin.html', logs=logs, reports=reports)
+    except Exception as e:
+        return f"Database Error pada Admin Panel: {e}"
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
