@@ -4,6 +4,15 @@ import mysql.connector
 
 app = Flask(__name__)
 
+# Ambil data dari Environment Variables yang kita set di ECS tadi
+db_host = os.environ.get('DB_HOST', 'localhost')
+db_user = os.environ.get('DB_USER', 'root')
+db_pass = os.environ.get('DB_PASS', '')
+db_name = os.environ.get('DB_NAME', 'logistics_db')
+
+# Contoh jika menggunakan Flask-SQLAlchemy dengan MySQL
+app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{db_user}:{db_pass}@{db_host}:3306/{db_name}"
+
 # Folder lokal untuk upload (Pengganti S3 sementara) [cite: 38, 45]
 UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -12,10 +21,10 @@ if not os.path.exists(UPLOAD_FOLDER):
 
 def get_db_connection():
     return mysql.connector.connect(
-        host='localhost',
-        user='root',
-        password='', # Kosongkan untuk Laragon
-        database='naufal_db'
+        host=db_host,
+        user=db_user,
+        password=db_pass,
+        database=db_name
     )
 
 @app.route('/')
