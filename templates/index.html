@@ -3,150 +3,423 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogiTrack-City | Dashboard</title>
+    <title>LogiTrack-City | Advanced Monitoring</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* CSS CUSTOM ELEGAN */
         :root {
-            --bg-dark: #0a0c10;
-            --card-dark: #12151c;
-            --accent-blue: #007bff;
-            --neon-blue: #00d4ff;
-            --text-main: #e6edf3;
-            --border-color: #30363d;
+            --bg-black: #050505;
+            --bg-gradient: linear-gradient(135deg, #050505 0%, #0a0e17 100%);
+            --card-bg: rgba(10, 15, 25, 0.6);
+            --card-border: rgba(0, 212, 255, 0.15);
+            --primary-blue: #00d4ff;
+            --secondary-blue: #4facfe;
+            --text-light: #e0e5ec;
+            --text-muted: #8892b0;
+            --glass-blur: blur(16px);
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* Navbar Style */
-        .custom-nav {
-            background-color: rgba(18, 21, 28, 0.95);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 0;
-            backdrop-filter: blur(10px);
+        /* Ambient Background Glow */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
         }
 
-        .brand-text {
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -20%;
+            right: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(79, 172, 254, 0.05) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(5, 5, 5, 0.8) !important;
+            backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--card-border);
+            padding: 1.2rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
             font-weight: 800;
-            letter-spacing: 1px;
-            color: var(--neon-blue);
-            text-transform: uppercase;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, var(--primary-blue), var(--secondary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        /* Card Style */
+        .navbar-brand i {
+            color: var(--primary-blue);
+            -webkit-text-fill-color: initial;
+        }
+
+        /* Glass Cards */
         .glass-card {
-            background: var(--card-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
-            transition: transform 0.3s ease;
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.03), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.7s ease;
+        }
+
+        .glass-card:hover::before {
+            left: 150%;
         }
 
         .glass-card:hover {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 15px rgba(0, 123, 255, 0.2);
+            transform: translateY(-5px);
+            border-color: rgba(0, 212, 255, 0.4);
+            box-shadow: 0 15px 35px rgba(0, 212, 255, 0.1);
         }
 
-        /* Table Style */
-        .table {
-            color: var(--text-main);
-            border-color: var(--border-color);
-        }
-
-        .table thead th {
-            background-color: #1a1f29;
-            color: var(--neon-blue);
-            border-bottom: 2px solid var(--accent-blue);
-        }
-
-        /* Inputs & Buttons */
-        .form-control {
-            background-color: #0d1117;
-            border: 1px solid var(--border-color);
-            color: white;
-            border-radius: 8px;
-        }
-
-        .form-control:focus {
-            background-color: #0d1117;
-            color: white;
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
-        }
-
-        .btn-glow {
-            background: linear-gradient(45deg, #0056b3, #00d4ff);
-            border: none;
-            color: white;
+        .card-title-custom {
+            color: #fff;
             font-weight: 600;
-            border-radius: 8px;
-            transition: 0.3s;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .btn-glow:hover {
-            filter: brightness(1.2);
+        .card-title-custom i {
+            color: var(--primary-blue);
+        }
+
+        /* Search Section */
+        .search-container {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--card-border);
+            color: white;
+            border-radius: 50px;
+            padding: 15px 25px;
+            padding-right: 140px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2), inset 0 2px 5px rgba(0,0,0,0.2);
+            color: white;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            bottom: 5px;
+            border-radius: 40px;
+            background: linear-gradient(45deg, var(--secondary-blue), var(--primary-blue));
+            border: none;
+            color: #000;
+            font-weight: 600;
+            padding: 0 25px;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            box-shadow: 0 0 15px var(--primary-blue);
+            transform: scale(1.02);
+        }
+
+        /* Table Styles */
+        .table-custom {
+            color: var(--text-light);
+            margin-bottom: 0;
+        }
+
+        .table-custom thead th {
+            background: rgba(0, 212, 255, 0.05);
+            color: var(--primary-blue);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            padding: 15px;
+            border-top: none;
+        }
+
+        .table-custom tbody td {
+            background: transparent;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            vertical-align: middle;
+            transition: background 0.3s ease;
+        }
+
+        .table-custom tbody tr:hover td {
+            background: rgba(0, 212, 255, 0.03);
+        }
+
+        .table-custom tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .resi-text {
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .status-badge {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--primary-blue);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Forms */
+        .form-control-custom {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--card-border);
+            color: white;
+            border-radius: 12px;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control-custom:focus {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: var(--primary-blue);
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.15);
+            outline: none;
+        }
+
+        .form-control-custom::placeholder {
+            color: var(--text-muted);
+        }
+
+        input[type="file"].form-control-custom::file-selector-button {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--primary-blue);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        input[type="file"].form-control-custom::file-selector-button:hover {
+            background: rgba(0, 212, 255, 0.2);
+        }
+
+        .btn-action {
+            background: transparent;
+            border: 1px solid var(--primary-blue);
+            color: var(--primary-blue);
+            border-radius: 12px;
+            padding: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-action:hover {
+            background: var(--primary-blue);
+            color: #000;
             box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
         }
 
-        .status-pill {
-            background: rgba(0, 212, 255, 0.1);
-            color: var(--neon-blue);
-            border: 1px solid var(--neon-blue);
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+        .btn-action.secondary {
+            border-color: var(--text-muted);
+            color: var(--text-light);
         }
+
+        .btn-action.secondary:hover {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            box-shadow: none;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin: 3rem 0;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-black);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 212, 255, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 212, 255, 0.5);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-up {
+            animation: fadeInUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+
     </style>
 </head>
 <body>
 
-<nav class="custom-nav mb-5">
+<nav class="navbar navbar-expand-lg fixed-top">
     <div class="container">
-        <span class="brand-text">🚛 LOGITRACK-CITY</span>
+        <a class="navbar-brand" href="/">
+            <i class="fa-solid fa-truck-fast"></i> LOGITRACK
+        </a>
     </div>
 </nav>
 
-<div class="container">
-    <div class="row align-items-center mb-5">
-        <div class="col-md-7">
-            <h1 class="fw-bold">City Logistics Monitoring</h1>
-            <p class="text-secondary">Dashboard sistem transportasi kota berbasis cloud.</p>
-        </div>
-        <div class="col-md-5">
-            <form action="/" method="get" class="d-flex">
-                <input type="text" name="search" class="form-control me-2" placeholder="Cari Resi atau Lokasi...">
-                <button type="submit" class="btn btn-glow px-4">Search</button>
-            </form>
+<div class="container" style="padding-top: 80px; padding-bottom: 50px;">
+    
+    <div class="page-header text-center animate-fade-up">
+        <h1 class="page-title">City Logistics Hub</h1>
+        <p class="page-subtitle">Sistem Pemantauan Distribusi & Logistik Pintar Berbasis Cloud</p>
+    </div>
+
+    <!-- Feature 1: Pencarian (Search) -->
+    <div class="row justify-content-center animate-fade-up delay-1">
+        <div class="col-lg-8">
+            <div class="search-container">
+                <form action="/" method="get">
+                    <input type="text" name="search" class="search-input" placeholder="Masukkan Nomor Resi atau Lokasi Tujuan..." autocomplete="off">
+                    <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass me-2"></i> Lacak</button>
+                </form>
+            </div>
         </div>
     </div>
 
     <div class="row g-4">
-        <div class="col-lg-8">
-            <div class="glass-card shadow-lg">
-                <h4 class="mb-4 text-white">Live Tracking Data</h4>
+        <!-- Feature 2: Tracking Dashboard -->
+        <div class="col-lg-8 mb-4 animate-fade-up delay-2">
+            <div class="glass-card">
+                <h4 class="card-title-custom">
+                    <i class="fa-solid fa-satellite-dish pulse"></i> Live Tracking Data
+                </h4>
                 <div class="table-responsive">
-                    <table class="table table-borderless align-middle">
+                    <table class="table table-custom">
                         <thead>
                             <tr>
-                                <th>Resi</th>
-                                <th>Status</th>
-                                <th>Lokasi</th>
+                                <th>No. Resi</th>
+                                <th>Status Pengiriman</th>
+                                <th>Lokasi Terkini</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for s in shipments %}
                             <tr>
-                                <td class="fw-bold">{{ s[0] }}</td>
-                                <td><span class="status-pill">{{ s[1] }}</span></td>
-                                <td>{{ s[2] }}</td>
+                                <td><span class="resi-text">{{ s[0] }}</span></td>
+                                <td><span class="status-badge"><i class="fa-solid fa-circle-dot me-1" style="font-size: 0.6rem;"></i> {{ s[1] }}</span></td>
+                                <td><i class="fa-solid fa-location-dot me-2" style="color: var(--text-muted)"></i> {{ s[2] }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-action view-map-btn" style="padding: 6px 12px; font-size: 0.85rem; width: auto; display: inline-flex;" data-bs-toggle="modal" data-bs-target="#mapModal" data-location="{{ s[2] }}">
+                                        <i class="fa-solid fa-map-location-dot"></i> View
+                                    </button>
+                                </td>
                             </tr>
                             {% else %}
-                            <tr><td colspan="3" class="text-center text-secondary py-4">Tidak ada data ditemukan</td></tr>
+                            <tr>
+                                <td colspan="4" class="text-center py-5">
+                                    <i class="fa-solid fa-box-open mb-3" style="font-size: 3rem; color: rgba(255,255,255,0.1);"></i>
+                                    <p class="text-muted mb-0">Data tidak ditemukan. Masukkan kata kunci yang benar.</p>
+                                </td>
+                            </tr>
                             {% endfor %}
                         </tbody>
                     </table>
@@ -155,28 +428,87 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="glass-card mb-4">
-                <h5 class="mb-3">Upload Bukti Pengiriman</h5>
+            <!-- Feature 3: Upload Bukti -->
+            <div class="glass-card mb-4 animate-fade-up delay-3">
+                <h5 class="card-title-custom">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti
+                </h5>
                 <form action="/upload" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file" class="form-control mb-3" required>
-                    <button type="submit" class="btn btn-glow w-100">Simpan ke Storage</button>
+                    <div class="mb-3">
+                        <label class="form-label text-muted small mb-2">Pilih File Bukti Pengiriman (Foto/Dokumen)</label>
+                        <input type="file" name="file" class="form-control-custom w-100" required>
+                    </div>
+                    <button type="submit" class="btn-action">
+                        <i class="fa-solid fa-upload"></i> Simpan ke Server
+                    </button>
                 </form>
             </div>
 
-            <div class="glass-card">
-                <h5 class="mb-3">Lapor Kendala Jalan</h5>
+            <!-- Feature 4: Lapor Kendala -->
+            <div class="glass-card animate-fade-up delay-3" style="animation-delay: 0.4s;">
+                <h5 class="card-title-custom" style="color: #ff4757;">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: #ff4757;"></i> Lapor Kendala
+                </h5>
                 <form action="/report" method="post">
-                    <textarea name="issue" class="form-control mb-3" rows="3" placeholder="Deskripsikan kendala lalu lintas..." required></textarea>
-                    <button type="submit" class="btn btn-outline-info w-100 py-2">Kirim Laporan</button>
+                    <div class="mb-3">
+                        <textarea name="issue" class="form-control-custom w-100" rows="3" placeholder="Deskripsikan kendala lalu lintas, cuaca, atau masalah armada..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-action secondary">
+                        <i class="fa-solid fa-paper-plane"></i> Kirim Laporan
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-<footer class="mt-5 py-4 border-top border-secondary text-center text-secondary">
-    <p>&copy; 2026 Naufal Ahmad Fauzan - itenas Bandung</p>
+<!-- Map Modal -->
+<div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content" style="background: rgba(10, 15, 25, 0.95); backdrop-filter: blur(16px); border: 1px solid var(--card-border); color: white;">
+      <div class="modal-header" style="border-bottom: 1px solid rgba(0, 212, 255, 0.2);">
+        <h5 class="modal-title" id="mapModalLabel"><i class="fa-solid fa-map-location-dot" style="color: var(--primary-blue);"></i> Lokasi Terkini: <span id="modalLocationName" style="color: var(--primary-blue);"></span></h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+        <!-- Iframe Map -->
+        <iframe id="mapIframe" width="100%" height="450" frameborder="0" style="border:0; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="py-4 text-center mt-5" style="border-top: 1px solid rgba(255,255,255,0.05);">
+    <p class="mb-0 text-muted small">&copy; 2026 LogiTrack City Logistics. Designed for Naufal Ahmad Fauzan.</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const mapModal = document.getElementById('mapModal');
+        const mapIframe = document.getElementById('mapIframe');
+        const modalLocationName = document.getElementById('modalLocationName');
+
+        if(mapModal) {
+            mapModal.addEventListener('show.bs.modal', function (event) {
+                // Get the button that triggered the modal
+                const button = event.relatedTarget;
+                // Extract info from data-location attribute
+                const location = button.getAttribute('data-location');
+                
+                // Update the modal's content
+                modalLocationName.textContent = location;
+                
+                // Use Google Maps Embed API (Free, no key needed for basic query)
+                mapIframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(location)}&output=embed`;
+            });
+
+            // Clear iframe when modal is closed
+            mapModal.addEventListener('hidden.bs.modal', function () {
+                mapIframe.src = '';
+            });
+        }
+    });
+</script>
 </body>
 </html>
