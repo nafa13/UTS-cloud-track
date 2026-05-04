@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogiTrack-City | Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* CSS CUSTOM ELEGAN */
+        :root {
+            --bg-dark: #0a0c10;
+            --card-dark: #12151c;
+            --accent-blue: #007bff;
+            --neon-blue: #00d4ff;
+            --text-main: #e6edf3;
+            --border-color: #30363d;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Navbar Style */
+        .custom-nav {
+            background-color: rgba(18, 21, 28, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-text {
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+        }
+
+        /* Card Style */
+        .glass-card {
+            background: var(--card-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.2);
+        }
+
+        /* Table Style */
+        .table {
+            color: var(--text-main);
+            border-color: var(--border-color);
+        }
+
+        .table thead th {
+            background-color: #1a1f29;
+            color: var(--neon-blue);
+            border-bottom: 2px solid var(--accent-blue);
+        }
+
+        /* Inputs & Buttons */
+        .form-control {
+            background-color: #0d1117;
+            border: 1px solid var(--border-color);
+            color: white;
+            border-radius: 8px;
+        }
+
+        .form-control:focus {
+            background-color: #0d1117;
+            color: white;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-glow {
+            background: linear-gradient(45deg, #0056b3, #00d4ff);
+            border: none;
+            color: white;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-glow:hover {
+            filter: brightness(1.2);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+        }
+
+        .status-pill {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="custom-nav mb-5">
+    <div class="container">
+        <span class="brand-text">🚛 LOGITRACK-CITY</span>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row align-items-center mb-5">
+        <div class="col-md-7">
+            <h1 class="fw-bold">City Logistics Monitoring</h1>
+            <p class="text-secondary">Dashboard sistem transportasi kota berbasis cloud.</p>
+        </div>
+        <div class="col-md-5">
+            <form action="/" method="get" class="d-flex">
+                <input type="text" name="search" class="form-control me-2" placeholder="Cari Resi atau Lokasi...">
+                <button type="submit" class="btn btn-glow px-4">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="glass-card shadow-lg">
+                <h4 class="mb-4 text-white">Live Tracking Data</h4>
+                <div class="table-responsive">
+                    <table class="table table-borderless align-middle">
+                        <thead>
+                            <tr>
+                                <th>Resi</th>
+                                <th>Status</th>
+                                <th>Lokasi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for s in shipments %}
+                            <tr>
+                                <td class="fw-bold">{{ s[0] }}</td>
+                                <td><span class="status-pill">{{ s[1] }}</span></td>
+                                <td>{{ s[2] }}</td>
+                            </tr>
+                            {% else %}
+                            <tr><td colspan="3" class="text-center text-secondary py-4">Tidak ada data ditemukan</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="glass-card mb-4">
+                <h5 class="mb-3">Upload Bukti Pengiriman</h5>
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" class="form-control mb-3" required>
+                    <button type="submit" class="btn btn-glow w-100">Simpan ke Storage</button>
+                </form>
+            </div>
+
+            <div class="glass-card">
+                <h5 class="mb-3">Lapor Kendala Jalan</h5>
+                <form action="/report" method="post">
+                    <textarea name="issue" class="form-control mb-3" rows="3" placeholder="Deskripsikan kendala lalu lintas..." required></textarea>
+                    <button type="submit" class="btn btn-outline-info w-100 py-2">Kirim Laporan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="mt-5 py-4 border-top border-secondary text-center text-secondary">
+    <p>&copy; 2026 Naufal Ahmad Fauzan - itenas Bandung</p>
+</footer>
+
+</body>
+</html>
