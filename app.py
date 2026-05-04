@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector
+import boto3
 
 app = Flask(__name__)
 
@@ -9,6 +10,7 @@ db_host = os.environ.get('DB_HOST', 'localhost')
 db_user = os.environ.get('DB_USER', 'root')
 db_pass = os.environ.get('DB_PASS', '')
 db_name = os.environ.get('DB_NAME', 'logistics_db')
+s3_bucket = os.environ.get('S3_BUCKET_NAME', 'nama-bucket-s3-kalian')
 
 # Contoh jika menggunakan Flask-SQLAlchemy dengan MySQL
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{db_user}:{db_pass}@{db_host}:3306/{db_name}"
@@ -48,19 +50,25 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    # Fitur Upload Bukti [cite: 45]
+    # Fitur Upload Bukti ke S3
     file = request.files.get('file')
     if file and file.filename != '':
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-        file.save(file_path)
-        
-        # Simpan metadata ke MySQL [cite: 47]
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute('INSERT INTO logs (filename, status) VALUES (%s, %s)', (file.filename, 'Uploaded Locally'))
-        conn.commit()
-        cur.close()
-        conn.close()
+        try:
+            # Upload file ke S3
+            s3 = boto3.client('s3')
+            s3.upload_fileobj(file, s3_bucket, file.filename)
+            
+            # Simpan metadata ke MySQL
+            conn = get_db_connection()
+            cur = conn.cursor()
+            cur.execute('INSERT INTO logs (filename, status) VALUES (%s, %s)', (file.filename, 'Uploaded to S3'))
+            conn.commit()
+            cur.close()
+            conn.close()
+        except Exception as e:
+            print(f"S3 Upload Error: {e}")
+            return f"Upload Error: {e}"
+            
     return redirect(url_for('index'))
 
 @app.route('/report', methods=['POST'])
