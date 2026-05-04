@@ -7,353 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --bg-black: #050505;
-            --bg-gradient: linear-gradient(135deg, #050505 0%, #0a0e17 100%);
-            --card-bg: rgba(10, 15, 25, 0.6);
-            --card-border: rgba(0, 212, 255, 0.15);
-            --primary-blue: #00d4ff;
-            --secondary-blue: #4facfe;
-            --text-light: #e0e5ec;
-            --text-muted: #8892b0;
-            --glass-blur: blur(16px);
-        }
-
-        body {
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            color: var(--text-light);
-            font-family: 'Outfit', sans-serif;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Ambient Background Glow */
-        body::before {
-            content: '';
-            position: fixed;
-            top: -20%;
-            left: -10%;
-            width: 50vw;
-            height: 50vw;
-            background: radial-gradient(circle, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            bottom: -20%;
-            right: -10%;
-            width: 50vw;
-            height: 50vw;
-            background: radial-gradient(circle, rgba(79, 172, 254, 0.05) 0%, transparent 70%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* Navbar */
-        .navbar {
-            background: rgba(5, 5, 5, 0.8) !important;
-            backdrop-filter: var(--glass-blur);
-            border-bottom: 1px solid var(--card-border);
-            padding: 1.2rem 0;
-            transition: all 0.3s ease;
-        }
-
-        .navbar-brand {
-            font-weight: 800;
-            font-size: 1.5rem;
-            letter-spacing: 2px;
-            background: linear-gradient(to right, var(--primary-blue), var(--secondary-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .navbar-brand i {
-            color: var(--primary-blue);
-            -webkit-text-fill-color: initial;
-        }
-
-        /* Glass Cards */
-        .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.03), transparent);
-            transform: skewX(-20deg);
-            transition: left 0.7s ease;
-        }
-
-        .glass-card:hover::before {
-            left: 150%;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(0, 212, 255, 0.4);
-            box-shadow: 0 15px 35px rgba(0, 212, 255, 0.1);
-        }
-
-        .card-title-custom {
-            color: #fff;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .card-title-custom i {
-            color: var(--primary-blue);
-        }
-
-        /* Search Section */
-        .search-container {
-            position: relative;
-            margin-bottom: 2rem;
-        }
-
-        .search-input {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--card-border);
-            color: white;
-            border-radius: 50px;
-            padding: 15px 25px;
-            padding-right: 140px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            width: 100%;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .search-input:focus {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2), inset 0 2px 5px rgba(0,0,0,0.2);
-            color: white;
-            outline: none;
-        }
-
-        .search-input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .search-btn {
-            position: absolute;
-            right: 5px;
-            top: 5px;
-            bottom: 5px;
-            border-radius: 40px;
-            background: linear-gradient(45deg, var(--secondary-blue), var(--primary-blue));
-            border: none;
-            color: #000;
-            font-weight: 600;
-            padding: 0 25px;
-            transition: all 0.3s ease;
-        }
-
-        .search-btn:hover {
-            box-shadow: 0 0 15px var(--primary-blue);
-            transform: scale(1.02);
-        }
-
-        /* Table Styles */
-        .table-custom {
-            color: var(--text-light);
-            margin-bottom: 0;
-        }
-
-        .table-custom thead th {
-            background: rgba(0, 212, 255, 0.05);
-            color: var(--primary-blue);
-            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            padding: 15px;
-            border-top: none;
-        }
-
-        .table-custom tbody td {
-            background: transparent;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            vertical-align: middle;
-            transition: background 0.3s ease;
-        }
-
-        .table-custom tbody tr:hover td {
-            background: rgba(0, 212, 255, 0.03);
-        }
-
-        .table-custom tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .resi-text {
-            font-family: monospace;
-            font-size: 1.1rem;
-            color: #fff;
-            letter-spacing: 1px;
-        }
-
-        .status-badge {
-            background: rgba(0, 212, 255, 0.1);
-            color: var(--primary-blue);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: inline-block;
-            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
-        }
-
-        /* Forms */
-        .form-control-custom {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--card-border);
-            color: white;
-            border-radius: 12px;
-            padding: 12px 15px;
-            transition: all 0.3s ease;
-        }
-
-        .form-control-custom:focus {
-            background: rgba(0, 0, 0, 0.4);
-            border-color: var(--primary-blue);
-            color: white;
-            box-shadow: 0 0 10px rgba(0, 212, 255, 0.15);
-            outline: none;
-        }
-
-        .form-control-custom::placeholder {
-            color: var(--text-muted);
-        }
-
-        input[type="file"].form-control-custom::file-selector-button {
-            background: rgba(0, 212, 255, 0.1);
-            color: var(--primary-blue);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            padding: 8px 16px;
-            border-radius: 8px;
-            margin-right: 15px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        input[type="file"].form-control-custom::file-selector-button:hover {
-            background: rgba(0, 212, 255, 0.2);
-        }
-
-        .btn-action {
-            background: transparent;
-            border: 1px solid var(--primary-blue);
-            color: var(--primary-blue);
-            border-radius: 12px;
-            padding: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-action:hover {
-            background: var(--primary-blue);
-            color: #000;
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
-        }
-
-        .btn-action.secondary {
-            border-color: var(--text-muted);
-            color: var(--text-light);
-        }
-
-        .btn-action.secondary:hover {
-            border-color: #fff;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            box-shadow: none;
-        }
-
-        /* Page Header */
-        .page-header {
-            margin: 3rem 0;
-        }
-
-        .page-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 0.5rem;
-        }
-
-        .page-subtitle {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-black);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 212, 255, 0.3);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 212, 255, 0.5);
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-fade-up {
-            animation: fadeInUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-            opacity: 0;
-        }
-
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
-
-    </style>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 </head>
 <body>
 
@@ -362,6 +16,25 @@
         <a class="navbar-brand" href="/">
             <i class="fa-solid fa-truck-fast"></i> LOGITRACK
         </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="border-color: rgba(0, 212, 255, 0.5);">
+            <i class="fa-solid fa-bars" style="color: var(--primary-blue);"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active text-light" aria-current="page" href="/"><i class="fa-solid fa-chart-line me-1"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="#lacak" style="opacity: 0.8;"><i class="fa-solid fa-magnifying-glass me-1"></i> Lacak Paket</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="#upload" style="opacity: 0.8;"><i class="fa-solid fa-cloud-arrow-up me-1"></i> Upload Bukti</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="#kendala" style="opacity: 0.8;"><i class="fa-solid fa-triangle-exclamation me-1"></i> Lapor Kendala</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 
@@ -373,7 +46,7 @@
     </div>
 
     <!-- Feature 1: Pencarian (Search) -->
-    <div class="row justify-content-center animate-fade-up delay-1">
+    <div class="row justify-content-center animate-fade-up delay-1" id="lacak">
         <div class="col-lg-8">
             <div class="search-container">
                 <form action="/" method="get">
@@ -386,7 +59,7 @@
 
     <div class="row g-4">
         <!-- Feature 2: Tracking Dashboard -->
-        <div class="col-lg-8 mb-4 animate-fade-up delay-2">
+        <div class="col-lg-8 mb-4 animate-fade-up delay-2" id="dashboard">
             <div class="glass-card">
                 <h4 class="card-title-custom">
                     <i class="fa-solid fa-satellite-dish pulse"></i> Live Tracking Data
@@ -429,7 +102,7 @@
 
         <div class="col-lg-4">
             <!-- Feature 3: Upload Bukti -->
-            <div class="glass-card mb-4 animate-fade-up delay-3">
+            <div class="glass-card mb-4 animate-fade-up delay-3" id="upload">
                 <h5 class="card-title-custom">
                     <i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti
                 </h5>
@@ -445,7 +118,7 @@
             </div>
 
             <!-- Feature 4: Lapor Kendala -->
-            <div class="glass-card animate-fade-up delay-3" style="animation-delay: 0.4s;">
+            <div class="glass-card animate-fade-up delay-3" style="animation-delay: 0.4s;" id="kendala">
                 <h5 class="card-title-custom" style="color: #ff4757;">
                     <i class="fa-solid fa-triangle-exclamation" style="color: #ff4757;"></i> Lapor Kendala
                 </h5>
