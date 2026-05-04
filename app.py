@@ -6,11 +6,11 @@ import boto3
 app = Flask(__name__)
 
 # Ambil data dari Environment Variables yang kita set di ECS tadi
-db_host = os.environ.get('DB_HOST', 'localhost')
-db_user = os.environ.get('DB_USER', 'root')
-db_pass = os.environ.get('DB_PASS', '')
-db_name = os.environ.get('DB_NAME', 'logistics_db')
-s3_bucket = os.environ.get('S3_BUCKET_NAME', 'nama-bucket-s3-kalian')
+db_host = os.environ.get('DB_HOST', 'citylogistics-db.cv0qooiiyisv.ap-southeast-2.rds.amazonaws.com')
+db_user = os.environ.get('DB_USER', 'admin')
+db_pass = os.environ.get('DB_PASS', 'Fal130404')
+db_name = os.environ.get('DB_NAME', 'citylogistics')
+s3_bucket = os.environ.get('S3_BUCKET_NAME', 'citylogistics-assets-nafa')
 
 # Contoh jika menggunakan Flask-SQLAlchemy dengan MySQL
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{db_user}:{db_pass}@{db_host}:3306/{db_name}"
