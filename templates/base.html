@@ -22,13 +22,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link active text-white" aria-current="page" href="/"><i class="fa-solid fa-chart-line me-1"></i> Dashboard</a>
+                    <a class="nav-link text-white {% if request.path == '/' %}active{% endif %}" aria-current="page" href="/"><i class="fa-solid fa-chart-line me-1"></i> Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="/about"><i class="fa-solid fa-building me-1"></i> Tentang Kami</a>
+                    <a class="nav-link text-white {% if request.path == '/about' %}active{% endif %}" href="/about"><i class="fa-solid fa-building me-1"></i> Tentang Kami</a>
                 </li>
                 <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-                    <a class="nav-link btn-admin-nav text-dark" href="/admin"><i class="fa-solid fa-shield-halved me-1"></i> Admin Panel</a>
+                    <a class="nav-link btn-admin-nav text-dark {% if request.path == '/admin' %}active{% endif %}" href="/admin"><i class="fa-solid fa-shield-halved me-1"></i> Admin Panel</a>
                 </li>
             </ul>
         </div>
@@ -67,7 +67,30 @@
                 mapIframe.src = '';
             });
         }
+
+        // SweetAlert2 Flash Messages
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: '{{ category if category != "error" else "error" }}',
+                        title: '{{ message }}',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        background: 'rgba(15, 20, 30, 0.95)',
+                        color: '#fff',
+                        customClass: {
+                            popup: 'glass-card'
+                        }
+                    });
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

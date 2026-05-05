@@ -1,10 +1,11 @@
 import os
 import boto3
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import mysql.connector
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+app.secret_key = os.environ.get('SECRET_KEY', 'supersecretkey_logitrac_2026')
 
 # Ambil data dari Environment Variables
 db_host = os.environ.get('DB_HOST', 'citylogistics-db.cv0qooiiyisv.ap-southeast-2.rds.amazonaws.com')
@@ -73,8 +74,10 @@ def upload_file():
             conn.commit()
             cur.close()
             conn.close()
+            flash('File bukti berhasil diunggah ke S3 dan CDN!', 'success')
         except Exception as e:
             print(f"S3 Upload Error: {e}")
+            flash(f"Gagal mengunggah file: {e}", 'error')
             return f"Upload Error: {e}"
             
     return redirect(url_for('index'))
@@ -90,6 +93,7 @@ def report_issue():
         conn.commit()
         cur.close()
         conn.close()
+        flash('Laporan kendala berhasil dikirim!', 'success')
     return redirect(url_for('index'))
 
 @app.route('/about')
@@ -127,8 +131,10 @@ def edit_report(id):
             conn.commit()
             cur.close()
             conn.close()
+            flash('Laporan kendala berhasil diperbarui!', 'success')
         except Exception as e:
             print(f"Update Report Error: {e}")
+            flash('Gagal memperbarui laporan.', 'error')
     return redirect(url_for('admin'))
 
 @app.route('/admin/report/delete/<int:id>', methods=['POST'])
@@ -140,8 +146,10 @@ def delete_report(id):
         conn.commit()
         cur.close()
         conn.close()
+        flash('Laporan kendala berhasil dihapus.', 'success')
     except Exception as e:
         print(f"Delete Report Error: {e}")
+        flash('Gagal menghapus laporan.', 'error')
     return redirect(url_for('admin'))
 
 @app.route('/admin/log/edit/<int:id>', methods=['POST'])
@@ -155,8 +163,10 @@ def edit_log(id):
             conn.commit()
             cur.close()
             conn.close()
+            flash('Status log berhasil diperbarui!', 'success')
         except Exception as e:
             print(f"Update Log Error: {e}")
+            flash('Gagal memperbarui log.', 'error')
     return redirect(url_for('admin'))
 
 @app.route('/admin/log/delete/<int:id>', methods=['POST'])
@@ -180,8 +190,10 @@ def delete_log(id):
         conn.commit()
         cur.close()
         conn.close()
+        flash('Log S3 berhasil dihapus secara permanen.', 'success')
     except Exception as e:
         print(f"Delete Log Error: {e}")
+        flash('Gagal menghapus log.', 'error')
     return redirect(url_for('admin'))
 
 if __name__ == '__main__':

@@ -11,7 +11,7 @@
     <div class="row justify-content-center animate-fade-up delay-1" id="lacak">
         <div class="col-lg-8">
             <div class="search-container">
-                <form action="/" method="get">
+                <form action="/" method="get" onsubmit="let btn = this.querySelector('button[type=submit]'); btn.innerHTML='<i class=\'fa-solid fa-spinner fa-spin me-2\'></i> Mencari...'; btn.classList.add('disabled');">
                     <input type="text" name="search" class="search-input" placeholder="Masukkan Nomor Resi atau Lokasi Tujuan..." autocomplete="off">
                     <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass me-2"></i> Lacak</button>
                 </form>
@@ -68,7 +68,7 @@
                 <h5 class="card-title-custom">
                     <i class="fa-solid fa-cloud-arrow-up"></i> Upload Bukti
                 </h5>
-                <form action="/upload" method="post" enctype="multipart/form-data">
+                <form action="/upload" method="post" enctype="multipart/form-data" onsubmit="let btn = this.querySelector('button[type=submit]'); btn.innerHTML='<i class=\'fa-solid fa-spinner fa-spin me-2\'></i> Mengunggah...'; btn.classList.add('disabled');">
                     <div class="mb-3">
                         <label class="form-label text-white small mb-2">Pilih File Bukti Pengiriman (Foto/Dokumen)</label>
                         <input type="file" name="file" class="form-control-custom w-100" required>
@@ -84,7 +84,7 @@
                 <h5 class="card-title-custom" style="color: #ff4757;">
                     <i class="fa-solid fa-triangle-exclamation" style="color: #ff4757;"></i> Lapor Kendala
                 </h5>
-                <form action="/report" method="post">
+                <form action="/report" method="post" onsubmit="let btn = this.querySelector('button[type=submit]'); btn.innerHTML='<i class=\'fa-solid fa-spinner fa-spin me-2\'></i> Mengirim...'; btn.classList.add('disabled');">
                     <div class="mb-3">
                         <textarea name="issue" class="form-control-custom w-100" rows="3" placeholder="Deskripsikan kendala lalu lintas, cuaca, atau masalah armada..." required></textarea>
                     </div>
