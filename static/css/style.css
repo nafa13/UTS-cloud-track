@@ -46,12 +46,36 @@
         }
 
         /* Navbar */
-        .navbar {
-            background: rgba(5, 5, 5, 0.8) !important;
-            backdrop-filter: var(--glass-blur);
-            border-bottom: 1px solid var(--card-border);
-            padding: 1.2rem 0;
-            transition: all 0.3s ease;
+        .navbar.floating-navbar {
+            background: rgba(10, 15, 25, 0.75) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50px;
+            padding: 0.8rem 2rem;
+            margin: 20px auto;
+            max-width: 900px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            z-index: 1030;
+        }
+        
+        .btn-admin-nav {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border-radius: 20px;
+            padding: 8px 20px !important;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+            color: #000 !important;
+        }
+        .btn-admin-nav:hover {
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.5);
+            transform: translateY(-2px);
+            color: #fff !important;
         }
 
         .navbar-brand {
@@ -73,14 +97,15 @@
 
         /* Glass Cards */
         .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
+            background: rgba(15, 20, 30, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
         }
@@ -102,9 +127,9 @@
         }
 
         .glass-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(0, 212, 255, 0.4);
-            box-shadow: 0 15px 35px rgba(0, 212, 255, 0.1);
+            transform: translateY(-5px) scale(1.01);
+            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 212, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         .card-title-custom {
@@ -130,24 +155,25 @@
         }
 
         .search-input {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--card-border);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
             border-radius: 50px;
-            padding: 15px 25px;
-            padding-right: 140px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
+            padding: 18px 30px;
+            padding-right: 150px;
+            font-size: 1.05rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             width: 100%;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2), inset 0 2px 5px rgba(255,255,255,0.02);
         }
 
         .search-input:focus {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.06);
             border-color: var(--primary-blue);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2), inset 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3), inset 0 2px 5px rgba(255,255,255,0.05);
             color: white;
             outline: none;
+            transform: scale(1.02);
         }
 
         .search-input::placeholder {
@@ -177,34 +203,58 @@
         .table-custom {
             color: var(--text-light);
             margin-bottom: 0;
+            border-collapse: separate;
+            border-spacing: 0 8px;
         }
 
         .table-custom thead th {
-            background: rgba(0, 212, 255, 0.05);
+            background: transparent;
             color: var(--primary-blue);
-            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
-            font-weight: 600;
+            border-bottom: none;
+            font-weight: 700;
             text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            padding: 15px;
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            padding: 10px 20px;
             border-top: none;
+        }
+
+        .table-custom tbody tr {
+            background: rgba(255, 255, 255, 0.02);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-radius: 12px;
         }
 
         .table-custom tbody td {
             background: transparent;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 15px;
+            border-bottom: none;
+            padding: 16px 20px;
             vertical-align: middle;
+            border-top: 1px solid rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.01);
             transition: background 0.3s ease;
         }
 
-        .table-custom tbody tr:hover td {
-            background: rgba(0, 212, 255, 0.03);
+        .table-custom tbody td:first-child {
+            border-left: 1px solid rgba(255,255,255,0.03);
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
         }
 
-        .table-custom tbody tr:last-child td {
-            border-bottom: none;
+        .table-custom tbody td:last-child {
+            border-right: 1px solid rgba(255,255,255,0.01);
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        .table-custom tbody tr:hover {
+            background: rgba(0, 212, 255, 0.08);
+            transform: scale(1.01) translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .table-custom tbody tr:hover td {
+            background: transparent;
         }
 
         .resi-text {
@@ -264,24 +314,27 @@
         }
 
         .btn-action {
-            background: transparent;
-            border: 1px solid var(--primary-blue);
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
             color: var(--primary-blue);
-            border-radius: 12px;
-            padding: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            border-radius: 16px;
+            padding: 14px;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .btn-action:hover {
-            background: var(--primary-blue);
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
             color: #000;
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
+            transform: translateY(-3px) scale(1.02);
+            border-color: transparent;
         }
 
         .btn-action.secondary {
