@@ -40,30 +40,6 @@
                                             </button>
                                         </form>
                                     </div>
-
-                                    <!-- Modal Edit Report -->
-                                    <div class="modal fade" id="editReportModal{{ r[0] }}" tabindex="-1" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content" style="background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
-                                                <div class="modal-header border-0">
-                                                    <h5 class="modal-title text-light"><i class="fa-solid fa-pen-to-square text-primary me-2"></i> Edit Laporan Kendala #{{ r[0] }}</h5>
-                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <form action="{{ url_for('edit_report', id=r[0]) }}" method="POST">
-                                                    <div class="modal-body text-start">
-                                                        <div class="mb-3">
-                                                            <label class="form-label text-muted">Deskripsi Kendala</label>
-                                                            <textarea class="form-control" name="description" rows="3" required style="background: rgba(255,255,255,0.05); color: white; border-color: rgba(255,255,255,0.1);">{{ r[1] }}</textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer border-0">
-                                                        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Batal</button>
-                                                        <button type="submit" class="btn btn-primary shadow">Simpan Perubahan</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </td>
                             </tr>
                             {% else %}
@@ -113,30 +89,6 @@
                                             </button>
                                         </form>
                                     </div>
-
-                                    <!-- Modal Edit Log -->
-                                    <div class="modal fade" id="editLogModal{{ l[0] }}" tabindex="-1" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content" style="background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
-                                                <div class="modal-header border-0">
-                                                    <h5 class="modal-title text-light"><i class="fa-solid fa-pen-to-square text-info me-2"></i> Edit Status Log #{{ l[0] }}</h5>
-                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <form action="{{ url_for('edit_log', id=l[0]) }}" method="POST">
-                                                    <div class="modal-body text-start">
-                                                        <div class="mb-3">
-                                                            <label class="form-label text-muted">Status / Keterangan</label>
-                                                            <input type="text" class="form-control" name="status" value="{{ l[2] }}" required style="background: rgba(255,255,255,0.05); color: white; border-color: rgba(255,255,255,0.1);">
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer border-0">
-                                                        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Batal</button>
-                                                        <button type="submit" class="btn btn-info shadow text-dark">Simpan Perubahan</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </td>
                             </tr>
                             {% else %}
@@ -154,4 +106,56 @@
         </div>
     </div>
 </div>
+
+<!-- Kumpulan Modal untuk Reports -->
+{% for r in reports %}
+<div class="modal fade" id="editReportModal{{ r[0] }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-light"><i class="fa-solid fa-pen-to-square text-primary me-2"></i> Edit Laporan Kendala #{{ r[0] }}</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('edit_report', id=r[0]) }}" method="POST">
+                <div class="modal-body text-start">
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Deskripsi Kendala</label>
+                        <textarea class="form-control" name="description" rows="3" required style="background: rgba(255,255,255,0.05); color: white; border-color: rgba(255,255,255,0.1);">{{ r[1] }}</textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary shadow">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- Kumpulan Modal untuk Logs -->
+{% for l in logs %}
+<div class="modal fade" id="editLogModal{{ l[0] }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-light"><i class="fa-solid fa-pen-to-square text-info me-2"></i> Edit Status Log #{{ l[0] }}</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('edit_log', id=l[0]) }}" method="POST">
+                <div class="modal-body text-start">
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Status / Keterangan</label>
+                        <input type="text" class="form-control" name="status" value="{{ l[2] }}" required style="background: rgba(255,255,255,0.05); color: white; border-color: rgba(255,255,255,0.1);">
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-info shadow text-dark">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
 {% endblock %}
