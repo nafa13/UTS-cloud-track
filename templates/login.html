@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh; padding-top: 80px;">
+    <div class="col-md-5 animate-fade-up">
+        <div class="glass-card text-center p-5">
+            <h3 class="mb-4 text-white fw-bold">
+                <i class="fa-solid fa-lock text-primary mb-3" style="font-size: 2.5rem;"></i><br>
+                Admin Login
+            </h3>
+            <p class="text-white-50 mb-4 small">Silakan masukkan kredensial Anda untuk mengakses Pusat Kendali.</p>
+            
+            <form action="{{ url_for('login') }}" method="POST" onsubmit="let btn = this.querySelector('button[type=submit]'); btn.innerHTML='<i class=\'fa-solid fa-spinner fa-spin me-2\'></i> Memverifikasi...'; btn.classList.add('disabled');">
+                <div class="mb-4 text-start">
+                    <label class="form-label text-white small ms-1">Username</label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-right: none; color: var(--primary-blue); border-top-left-radius: 20px; border-bottom-left-radius: 20px;">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input type="text" name="username" class="form-control" placeholder="Masukkan username" required autocomplete="off" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-left: none; color: white; border-top-right-radius: 20px; border-bottom-right-radius: 20px; box-shadow: none;">
+                    </div>
+                </div>
+                
+                <div class="mb-4 text-start">
+                    <label class="form-label text-white small ms-1">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-right: none; color: var(--primary-blue); border-top-left-radius: 20px; border-bottom-left-radius: 20px;">
+                            <i class="fa-solid fa-key"></i>
+                        </span>
+                        <input type="password" name="password" class="form-control" placeholder="Masukkan password" required style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-left: none; color: white; border-top-right-radius: 20px; border-bottom-right-radius: 20px; box-shadow: none;">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-action mt-2 w-100">
+                    <i class="fa-solid fa-right-to-bracket me-2"></i> Masuk Sistem
+                </button>
+            </form>
+            
+            <div class="mt-4">
+                <a href="/" class="text-decoration-none" style="color: var(--secondary-blue); font-size: 0.85rem;">
+                    <i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Beranda
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

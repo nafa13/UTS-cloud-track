@@ -30,6 +30,11 @@
                 <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
                     <a class="nav-link text-white {% if request.path == '/admin' %}active{% endif %}" href="/admin"><i class="fa-solid fa-shield-halved me-1"></i> Admin Panel</a>
                 </li>
+                {% if session.get('logged_in') %}
+                <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                    <a class="nav-link text-danger" href="/logout" onclick="return confirm('Apakah Anda yakin ingin logout?');"><i class="fa-solid fa-right-from-bracket me-1"></i> Logout</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>

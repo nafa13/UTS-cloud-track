@@ -1,11 +1,28 @@
 import os
 import boto3
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
+import functools
 import mysql.connector
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'supersecretkey_logitrac_2026')
+app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024 # 5MB limit
+
+@app.errorhandler(413)
+def request_entity_too_large(error):
+    flash('Gagal: Ukuran file terlalu besar! Maksimal 5MB.', 'error')
+    return redirect(url_for('index'))
+
+def login_required(f):
+    @functools.wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('logged_in'):
+            flash('Anda harus login terlebih dahulu!', 'error')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 
 # Ambil data dari Environment Variables
 db_host = os.environ.get('DB_HOST', 'citylogistics-db.cv0qooiiyisv.ap-southeast-2.rds.amazonaws.com')
@@ -100,7 +117,30 @@ def report_issue():
 def about():
     return render_template('about.html')
 
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        if username == 'admin' and password == 'Fal130404':
+            session['logged_in'] = True
+            flash('Berhasil login sebagai Admin!', 'success')
+            return redirect(url_for('admin'))
+        else:
+            flash('Username atau Password salah!', 'error')
+            
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    flash('Anda telah logout.', 'success')
+    return redirect(url_for('index'))
+
 @app.route('/admin')
+@login_required
 def admin():
     try:
         conn = get_db_connection()
@@ -121,6 +161,7 @@ def admin():
         return f"Database Error pada Admin Panel: {e}"
 
 @app.route('/admin/report/edit/<int:id>', methods=['POST'])
+@login_required
 def edit_report(id):
     description = request.form.get('description')
     if description:
@@ -138,6 +179,7 @@ def edit_report(id):
     return redirect(url_for('admin'))
 
 @app.route('/admin/report/delete/<int:id>', methods=['POST'])
+@login_required
 def delete_report(id):
     try:
         conn = get_db_connection()
@@ -153,6 +195,7 @@ def delete_report(id):
     return redirect(url_for('admin'))
 
 @app.route('/admin/log/edit/<int:id>', methods=['POST'])
+@login_required
 def edit_log(id):
     status = request.form.get('status')
     if status:
@@ -170,6 +213,7 @@ def edit_log(id):
     return redirect(url_for('admin'))
 
 @app.route('/admin/log/delete/<int:id>', methods=['POST'])
+@login_required
 def delete_log(id):
     try:
         conn = get_db_connection()
