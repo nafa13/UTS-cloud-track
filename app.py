@@ -1,25 +1,24 @@
 import os
+import boto3
 from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector
-import boto3
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-# Ambil data dari Environment Variables yang kita set di ECS tadi
+# Ambil data dari Environment Variables
 db_host = os.environ.get('DB_HOST', 'citylogistics-db.cv0qooiiyisv.ap-southeast-2.rds.amazonaws.com')
 db_user = os.environ.get('DB_USER', 'admin')
 db_pass = os.environ.get('DB_PASS', 'Fal130404')
 db_name = os.environ.get('DB_NAME', 'citylogistics')
 s3_bucket = os.environ.get('S3_BUCKET_NAME', 'citylogistics-assets-nafa')
 
-# Contoh jika menggunakan Flask-SQLAlchemy dengan MySQL
-app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{db_user}:{db_pass}@{db_host}:3306/{db_name}"
+# --- KONFIGURASI CDN CLOUDFRONT ---
+# GANTI ini dengan URL CloudFront yang kamu copy tadi! (Pakai https:// dan hapus garis miring di akhir)
+CLOUDFRONT_DOMAIN = os.environ.get('CLOUDFRONT_DOMAIN', 'https://d2jaf5rgtzj7d1.cloudfront.net')
+S3_REGION = 'ap-southeast-2'
 
-# Folder lokal untuk upload (Pengganti S3 sementara) [cite: 38, 45]
-UPLOAD_FOLDER = 'uploads'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
+s3_client = boto3.client('s3', region_name=S3_REGION)
 
 def get_db_connection():
     return mysql.connector.connect(
@@ -50,18 +49,27 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    # Fitur Upload Bukti ke S3
+    # Fitur Upload Bukti ke S3 dan CDN
     file = request.files.get('file')
     if file and file.filename != '':
+        # Amankan nama file dari karakter aneh/spasi
+        filename = secure_filename(file.filename)
         try:
-            # Upload file ke S3
-            s3 = boto3.client('s3')
-            s3.upload_fileobj(file, s3_bucket, file.filename)
+            # 1. Upload file ke S3
+            s3_client.upload_fileobj(
+                file, 
+                s3_bucket, 
+                filename,
+                ExtraArgs={'ContentType': file.content_type} # Penting agar gambar bisa dirender browser
+            )
             
-            # Simpan metadata ke MySQL
+            # 2. Rangkai URL CloudFront
+            file_url = f"{CLOUDFRONT_DOMAIN}/{filename}"
+            
+            # 3. Simpan URL CloudFront ke MySQL
             conn = get_db_connection()
             cur = conn.cursor()
-            cur.execute('INSERT INTO logs (filename, status) VALUES (%s, %s)', (file.filename, 'Uploaded to S3'))
+            cur.execute('INSERT INTO logs (filename, status) VALUES (%s, %s)', (file_url, 'Uploaded via CDN'))
             conn.commit()
             cur.close()
             conn.close()
@@ -73,7 +81,7 @@ def upload_file():
 
 @app.route('/report', methods=['POST'])
 def report_issue():
-    # Fitur Lapor Kendala [cite: 21, 25, 44]
+    # Fitur Lapor Kendala
     issue = request.form.get('issue')
     if issue:
         conn = get_db_connection()
