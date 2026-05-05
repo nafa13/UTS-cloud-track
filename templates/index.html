@@ -41,7 +41,7 @@
                             <tr>
                                 <td><span class="resi-text">{{ s[0] }}</span></td>
                                 <td><span class="status-badge"><i class="fa-solid fa-circle-dot me-1" style="font-size: 0.6rem;"></i> {{ s[1] }}</span></td>
-                                <td><i class="fa-solid fa-location-dot me-2" style="color: var(--text-muted)"></i> {{ s[2] }}</td>
+                                <td><i class="fa-solid fa-location-dot me-2" style="color: white"></i> {{ s[2] }}</td>
                                 <td>
                                     <button class="btn btn-sm btn-action view-map-btn" style="padding: 6px 12px; font-size: 0.85rem; width: auto; display: inline-flex;" data-bs-toggle="modal" data-bs-target="#mapModal" data-location="{{ s[2] }}">
                                         <i class="fa-solid fa-map-location-dot"></i> View
@@ -52,7 +52,7 @@
                             <tr>
                                 <td colspan="4" class="text-center py-5">
                                     <i class="fa-solid fa-box-open mb-3" style="font-size: 3rem; color: rgba(255,255,255,0.1);"></i>
-                                    <p class="text-muted mb-0">Data tidak ditemukan. Masukkan kata kunci yang benar.</p>
+                                    <p class="text-white mb-0">Data tidak ditemukan. Masukkan kata kunci yang benar.</p>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -70,7 +70,7 @@
                 </h5>
                 <form action="/upload" method="post" enctype="multipart/form-data">
                     <div class="mb-3">
-                        <label class="form-label text-muted small mb-2">Pilih File Bukti Pengiriman (Foto/Dokumen)</label>
+                        <label class="form-label text-white small mb-2">Pilih File Bukti Pengiriman (Foto/Dokumen)</label>
                         <input type="file" name="file" class="form-control-custom w-100" required>
                     </div>
                     <button type="submit" class="btn-action">

@@ -26,9 +26,9 @@
                         <tbody>
                             {% for r in reports %}
                             <tr>
-                                <td class="fw-bold text-muted">#{{ r[0] }}</td>
+                                <td class="fw-bold text-white">#{{ r[0] }}</td>
                                 <td>{{ r[1] }}</td>
-                                <td class="text-muted small">{{ r[2] if r|length > 2 else 'Waktu Tidak Tersedia' }}</td>
+                                <td class="text-white small">{{ r[2] if r|length > 2 else 'Waktu Tidak Tersedia' }}</td>
                                 <td class="text-center">
                                     <div class="btn-group shadow-sm" role="group">
                                         <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editReportModal{{ r[0] }}" title="Edit">
@@ -44,7 +44,7 @@
                             </tr>
                             {% else %}
                             <tr>
-                                <td colspan="4" class="text-center py-4 text-muted">
+                                <td colspan="4" class="text-center py-4 text-white">
                                     <i class="fa-solid fa-check-circle mb-2" style="font-size: 2rem; color: rgba(0, 255, 128, 0.3);"></i><br>
                                     Belum ada kendala yang dilaporkan. Operasional lancar!
                                 </td>
@@ -75,7 +75,7 @@
                         <tbody>
                             {% for l in logs %}
                             <tr>
-                                <td class="fw-bold text-muted">#{{ l[0] }}</td>
+                                <td class="fw-bold text-white">#{{ l[0] }}</td>
                                 <td><i class="fa-solid fa-file-image me-2 text-primary"></i><a href="{{ l[1] }}" target="_blank" class="text-decoration-none text-light">{{ l[1].split('/')[-1] }}</a></td>
                                 <td><span class="status-badge" style="border-color: rgba(0, 255, 128, 0.5); color: #00ff80;"><i class="fa-solid fa-check me-1"></i> {{ l[2] }}</span></td>
                                 <td class="text-center">
@@ -93,7 +93,7 @@
                             </tr>
                             {% else %}
                             <tr>
-                                <td colspan="4" class="text-center py-4 text-muted">
+                                <td colspan="4" class="text-center py-4 text-white">
                                     <i class="fa-solid fa-folder-open mb-2" style="font-size: 2rem; color: rgba(255, 255, 255, 0.1);"></i><br>
                                     Belum ada file bukti yang diunggah.
                                 </td>
@@ -119,7 +119,7 @@
             <form action="{{ url_for('edit_report', id=r[0]) }}" method="POST">
                 <div class="modal-body text-start">
                     <div class="mb-3">
-                        <label class="form-label text-muted">Deskripsi Kendala</label>
+                        <label class="form-label text-white">Deskripsi Kendala</label>
                         <textarea class="form-control" name="description" rows="3" required style="background: rgba(255,255,255,0.05); color: white; border-color: rgba(255,255,255,0.1);">{{ r[1] }}</textarea>
                     </div>
                 </div>
@@ -145,7 +145,7 @@
             <form action="{{ url_for('edit_log', id=l[0]) }}" method="POST">
                 <div class="modal-body text-start">
                     <div class="mb-3">
-                        <label class="form-label text-muted">Status / Keterangan</label>
+                        <label class="form-label text-white">Status / Keterangan</label>
                         <input type="text" class="form-control" name="status" value="{{ l[2] }}" required style="background: rgba(255,255,255,0.05); color: white; border-color: rgba(255,255,255,0.1);">
                     </div>
                 </div>
