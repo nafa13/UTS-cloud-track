@@ -116,5 +116,73 @@ def admin():
     except Exception as e:
         return f"Database Error pada Admin Panel: {e}"
 
+@app.route('/admin/report/edit/<int:id>', methods=['POST'])
+def edit_report(id):
+    description = request.form.get('description')
+    if description:
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+            cur.execute('UPDATE reports SET description = %s WHERE id = %s', (description, id))
+            conn.commit()
+            cur.close()
+            conn.close()
+        except Exception as e:
+            print(f"Update Report Error: {e}")
+    return redirect(url_for('admin'))
+
+@app.route('/admin/report/delete/<int:id>', methods=['POST'])
+def delete_report(id):
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute('DELETE FROM reports WHERE id = %s', (id,))
+        conn.commit()
+        cur.close()
+        conn.close()
+    except Exception as e:
+        print(f"Delete Report Error: {e}")
+    return redirect(url_for('admin'))
+
+@app.route('/admin/log/edit/<int:id>', methods=['POST'])
+def edit_log(id):
+    status = request.form.get('status')
+    if status:
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+            cur.execute('UPDATE logs SET status = %s WHERE id = %s', (status, id))
+            conn.commit()
+            cur.close()
+            conn.close()
+        except Exception as e:
+            print(f"Update Log Error: {e}")
+    return redirect(url_for('admin'))
+
+@app.route('/admin/log/delete/<int:id>', methods=['POST'])
+def delete_log(id):
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        # Hapus file dari S3
+        cur.execute('SELECT filename FROM logs WHERE id = %s', (id,))
+        log = cur.fetchone()
+        if log:
+            file_url = log[0]
+            # filename adalah bagian terakhir dari URL
+            filename = file_url.split('/')[-1]
+            try:
+                s3_client.delete_object(Bucket=s3_bucket, Key=filename)
+            except Exception as s3_e:
+                print(f"S3 Delete Error: {s3_e}")
+
+        cur.execute('DELETE FROM logs WHERE id = %s', (id,))
+        conn.commit()
+        cur.close()
+        conn.close()
+    except Exception as e:
+        print(f"Delete Log Error: {e}")
+    return redirect(url_for('admin'))
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
